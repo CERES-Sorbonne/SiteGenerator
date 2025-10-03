@@ -12,6 +12,7 @@ import LogoLabo from '../images/LogoLabo.png'
 
 import "../style/accueil.css"
 
+
 const Home = ({ data }) => {
     const nodes = data.allMarkdownRemark.nodes
     const lastPosts = React.useRef(null)
@@ -75,7 +76,8 @@ export const query = graphql`
   query MyQuery {
     site {
         siteMetadata {
-            title
+            title,
+            googleVerification
         }
     }
     allMarkdownRemark(sort: {fields: {date: DESC}}, filter: {fields: {date: {ne: null}}}, limit: 999) {
@@ -109,3 +111,20 @@ export const query = graphql`
 `
 
 export default Home
+
+export const Head = ({ data }) => {
+    const { title, description, googleVerification } = data.site.siteMetadata
+  
+    return (
+      <>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        {googleVerification && (
+          <meta
+            name="google-site-verification"
+            content={googleVerification}
+          />
+        )}
+      </>
+    )
+  }
